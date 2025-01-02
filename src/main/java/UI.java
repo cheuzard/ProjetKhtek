@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class manager{
+public class UI{
     static int width = 800;
     static int height = 540;
     static DefaultListModel<property> listingModel = new DefaultListModel<>();
