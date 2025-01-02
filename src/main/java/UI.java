@@ -15,6 +15,9 @@ public class UI{
         manager.addProperty("anisia","ouled fait",300);
         manager.addProperty("hachmia","ain benian",500);
         Listing = new JList<>(listingModel);
+        Listing.setAutoscrolls(true);
+        Listing.setBackground(Color.lightGray);
+        Listing.setFont(new Font("Monospaced", Font.PLAIN, 12));
         for(property property : manager.getSellingList()){
             listingModel.addElement(property);
         }
@@ -27,7 +30,6 @@ public class UI{
         JFrame mainFrame = new JFrame();
         mainFrame.setSize(width, height);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         return mainFrame;
     }
 
@@ -37,9 +39,8 @@ public class UI{
                 createListingPanel(),
                 createSecondaryPanel()
         );
-        mainSplit.setOneTouchExpandable(false);
-//        mainSplit.setResizeWeight(0.33);
-        mainSplit.setDividerLocation(.33);
+        mainSplit.setEnabled(false);
+        mainSplit.setResizeWeight(.05);
         return mainSplit;
     }
 
@@ -50,6 +51,7 @@ public class UI{
         listingPanel.setSize(maxWidth, height);
         listingPanel.add(CreateTypeButton(), BorderLayout.NORTH);
         listingPanel.add(Listing, BorderLayout.CENTER);
+        listingPanel.setBackground(Color.lightGray);
         return listingPanel;
     }
 
@@ -80,7 +82,7 @@ public class UI{
         JPanel secondaryPanel = new JPanel();
         secondaryPanel.setLayout(new BoxLayout(secondaryPanel,BoxLayout.Y_AXIS));
         secondaryPanel.setSize(width-(width/3), height);
-        secondaryPanel.setBackground(Color.BLACK);
+        secondaryPanel.setBackground(Color.lightGray);
         return secondaryPanel;
     }
 }

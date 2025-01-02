@@ -40,6 +40,6 @@ public class property {
     }
     @Override
     public String toString() {
-        return name ;
+        return  String.format("%-10s | %-13s | %7d$",name,location,price);
     }
 }
