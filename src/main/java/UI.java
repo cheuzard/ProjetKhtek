@@ -15,10 +15,11 @@ public class UI{
         manager.addProperty("anisia","ouled fait",300);
         manager.addProperty("hachmia","ain benian",500);
         Listing = new JList<>(listingModel);
-        listingModel.addAll(manager.getSellingList());
+        for(property property : manager.getSellingList()){
+            listingModel.addElement(property);
+        }
         JFrame mainFrame = createMainFrame();
-        mainFrame.add(CreateListingPanel());
-        mainFrame.add(createSecondaryPanel());
+        mainFrame.add(createSlit());
         mainFrame.setVisible(true);
     }
 
@@ -26,40 +27,59 @@ public class UI{
         JFrame mainFrame = new JFrame();
         mainFrame.setSize(width, height);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setLayout(new FlowLayout());
 
         return mainFrame;
     }
 
-    static JPanel CreateListingPanel(){
-          int maxWidth =  width/3;
-          JPanel listingPanel = new JPanel();
-          listingPanel.setLayout(new BoxLayout(listingPanel,BoxLayout.Y_AXIS));
-          listingPanel.setBounds(0, 0, maxWidth, height);
-          listingPanel.add(CreateTypeButton());
-          listingPanel.add(Listing);
-          listingPanel.setBackground(Color.red);
+    private static JSplitPane createSlit() {
+        JSplitPane mainSplit = new JSplitPane(
+                JSplitPane.HORIZONTAL_SPLIT,
+                createListingPanel(),
+                createSecondaryPanel()
+        );
+        mainSplit.setOneTouchExpandable(false);
+//        mainSplit.setResizeWeight(0.33);
+        mainSplit.setDividerLocation(.33);
+        return mainSplit;
+    }
+
+    private static JPanel createListingPanel() {
+        int maxWidth =  width/3;
+        JPanel listingPanel = new JPanel();
+        listingPanel.setLayout(new BorderLayout(5, 5));
+        listingPanel.setSize(maxWidth, height);
+        listingPanel.add(CreateTypeButton(), BorderLayout.NORTH);
+        listingPanel.add(Listing, BorderLayout.CENTER);
         return listingPanel;
     }
+
     static JButton CreateTypeButton(){
-        JButton typeButton = new JButton("Type");
-        typeButton.addActionListener(e -> toggleList());
+        JButton typeButton = new JButton("pending");
+        typeButton.addActionListener(e -> {
+            listingSold.set(!listingSold.get());
+            toggleList();
+            typeButton.setText(!listingSold.get() ? "pending" : "sold");
+        });
         return typeButton;
     }
 
     private static void toggleList() {
         listingModel.removeAllElements();
-        if(listingSold.compareAndSet(false, !listingSold.get())) {
-            listingModel.addAll(manager.getSellingList());
+        if(listingSold.get()) {
+            for(property property : manager.getSoldList()){
+                listingModel.addElement(property);
+            }
         }
         else{
-            listingModel.addAll(manager.getSoldList());
+            for(property property : manager.getSellingList()){
+                listingModel.addElement(property);
+            }
         }
     }
     static JPanel createSecondaryPanel(){
         JPanel secondaryPanel = new JPanel();
         secondaryPanel.setLayout(new BoxLayout(secondaryPanel,BoxLayout.Y_AXIS));
-        secondaryPanel.setBounds(0, 0, width-(width/3), height);
+        secondaryPanel.setSize(width-(width/3), height);
         secondaryPanel.setBackground(Color.BLACK);
         return secondaryPanel;
     }

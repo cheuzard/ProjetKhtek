@@ -40,6 +40,6 @@ public class property {
     }
     @Override
     public String toString() {
-        return name + ", " + location + ", " + price;
+        return name ;
     }
 }
